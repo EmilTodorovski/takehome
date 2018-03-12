@@ -7,6 +7,9 @@ export interface WorkspaceBlockProps { store: ExpressionStore; }
 
 @observer
 export class Workspace extends React.Component<WorkspaceBlockProps, {}> {
+    constructor(props: WorkspaceBlockProps) {
+        super(props);
+    }
 
     render() {
         return <div className="input">

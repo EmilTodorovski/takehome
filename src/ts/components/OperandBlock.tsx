@@ -7,6 +7,9 @@ export interface OperandBlockProps { operand: Operand; store: ExpressionStore }
 
 @observer
 export class OperandBlock extends React.Component<OperandBlockProps, {}> {
+    constructor(props: OperandBlockProps) {
+        super(props);
+    }
 
     handleOperandChange  = (event: any) => {
         const eventValue = event.target.value;

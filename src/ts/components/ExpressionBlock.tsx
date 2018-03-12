@@ -66,13 +66,12 @@ export class ExpressionBlock extends React.Component<ExpressionBlockProps, {}> {
     };
 
     createEditValueJsx(operand: Operand, isLeftOperand: boolean): string {
-        console.debug("IN createEditValueJsx !!!!!!!");
         const operandType = this.typeOfOperand(operand);
         if (operandType === "string") {
-            console.debug("IN createEditValueJsx !!!!!!! string");
+            console.debug("in createEditValueJsx, operandtype = string");
             return (<input onKeyUp={isLeftOperand ? this.handleLeftOperandKeyUp : this.handleRightOperandKeyUp}/>)
         } else if (operandType === "expression") {
-            console.debug("IN createEditValueJsx !!!!!!! expression");
+            console.debug("in createEditValueJsx, operandtype = expression");
             return (<div className="indented" >
                 <br/>
                 <ExpressionBlock expression={operand} store={this.props.store}/>

@@ -1,20 +1,12 @@
-import {observable, computed} from 'mobx';
-import * as mobx from 'mobx'
+import {computed, observable} from 'mobx';
 import {Expression, Operand} from "../model/Expression";
-import {Operator} from "../model/Operator";
 
 export default class ExpressionStore {
 
     @observable expression: Expression = new Expression();
 
-    changeLeftOperand (newValue: Operand) {
-        console.log("NEW VALUE: " + newValue)
-        console.log("BEFORE CHANGE IN STORE");
-        console.log(this.expression.leftOperand);
-
-        this.expression.leftOperand = newValue;
-        console.log("AFTER CHANGE IN STORE");
-        console.log(this.expression.leftOperand);
+    @computed get createResultQuery(): string {
+        return this.translateExpression(this.expression);
     }
 
     changeExpressionState() {
@@ -45,10 +37,6 @@ export default class ExpressionStore {
         }
     }
 
-    @computed get createResultQuery(): string {
-        return this.translateExpression(this.expression);
-    }
-
     private translateExpression(expression: Expression): string {
         return "(" +
             this.translateOperand(expression.leftOperand) +
@@ -63,7 +51,7 @@ export default class ExpressionStore {
         if (operand === undefined || operand === null) {
             return "N/A";
         } else if (typeof operand === "string") {
-            return operand;
+            return "\"" + operand + "\"";
         } else {
             return this.translateExpression(operand);
         }
