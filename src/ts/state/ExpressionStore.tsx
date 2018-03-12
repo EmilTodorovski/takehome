@@ -1,5 +1,6 @@
 import {computed, observable} from 'mobx';
 import {Expression, Operand} from "../model/Expression";
+import {typeOfOperand} from "../util/OperandUtils";
 
 export default class ExpressionStore {
 
@@ -16,25 +17,15 @@ export default class ExpressionStore {
 
 
     changeExpressionStateWithExpression(expression: Expression) {
-        if (this.typeOfOperand( expression.leftOperand) === "expression") {
+        if (typeOfOperand( expression.leftOperand) === "expression") {
             this.changeExpressionStateWithExpression(expression.leftOperand);
             expression.leftOperand = Object.assign({}, expression.leftOperand);
         }
-        if (this.typeOfOperand( expression.rightOperand) === "expression") {
+        if (typeOfOperand( expression.rightOperand) === "expression") {
             this.changeExpressionStateWithExpression(expression.rightOperand);
             expression.rightOperand = Object.assign({}, expression.rightOperand);
         }
 
-    }
-
-    typeOfOperand(operand: Operand): string {
-        if (operand === undefined || operand === null) {
-            return "none"
-        } else if (typeof operand === "string") {
-            return "string"
-        } else{
-            return "expression"
-        }
     }
 
     private translateExpression(expression: Expression): string {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import ExpressionStore from "../state/ExpressionStore";
 import {Expression, Operand} from "../model/Expression";
 import {observer} from "mobx-react";
+import {typeOfOperand} from "../util/OperandUtils";
 
 export interface OperandBlockProps { operand: Operand; store: ExpressionStore }
 
@@ -27,26 +28,14 @@ export class OperandBlock extends React.Component<OperandBlockProps, {}> {
         this.props.store.changeExpressionState();
     };
 
-    typeOfOperand(operand: Operand): string {
-        if (operand === undefined || operand === null) {
-            return "none"
-        } else if (typeof operand === "string") {
-            return "string"
-        } else{
-            return "expression"
-        }
-    }
-
     render() {
-        const operandType = this.typeOfOperand(this.props.operand);
+        const operandType = typeOfOperand(this.props.operand);
 
         return <div><select value={operandType} onChange={this.handleOperandChange}>
             <option value="none">Select Operand</option>
             <option value="string">String</option>
             <option value="expression">Expression</option>
         </select>
-
         </div>;
-        //<input onkeyup="peopleStore[1].name = event.target.value" />
     }
 }

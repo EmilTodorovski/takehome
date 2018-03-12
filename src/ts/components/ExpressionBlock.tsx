@@ -3,6 +3,7 @@ import {Expression, Operand} from "../model/Expression";
 import {Operator} from "../model/Operator";
 import {observer} from "mobx-react";
 import ExpressionStore from "../state/ExpressionStore";
+import {computeNewOperandValue, typeOfOperand} from "../util/OperandUtils";
 
 export interface ExpressionBlockProps { expression: Expression; store: ExpressionStore }
 
@@ -12,38 +13,13 @@ export class ExpressionBlock extends React.Component<ExpressionBlockProps, {}> {
         super(props);
     }
 
-    typeOfOperand(operand: Operand): string {
-        if (operand === undefined || operand === null) {
-            return "none"
-        } else if (typeof operand === "string") {
-            return "string"
-        } else{
-            return "expression"
-        }
-    }
-
-    computeNewOperandValue(event: any): Operand {
-        const eventValue = event.target.value;
-        console.log(eventValue);
-        let newValue;
-        if (eventValue === "none" ) {
-            newValue = undefined;
-        } else if (eventValue === "string") {
-            newValue = "";
-        } else if (eventValue === "expression") {
-            newValue = new Expression();
-        }
-        console.debug("New operand value: " + newValue);
-        return newValue;
-    }
-
     handleLeftOperandChange  = (event: any) => {
-        this.props.expression.leftOperand = this.computeNewOperandValue(event);
+        this.props.expression.leftOperand = computeNewOperandValue(event);
         this.props.store.changeExpressionState();
     };
 
     handleRightOperandChange = (event: any) => {
-        this.props.expression.rightOperand = this.computeNewOperandValue(event);
+        this.props.expression.rightOperand = computeNewOperandValue(event);
         this.props.store.changeExpressionState();
     };
 
@@ -66,7 +42,7 @@ export class ExpressionBlock extends React.Component<ExpressionBlockProps, {}> {
     };
 
     createEditValueJsx(operand: Operand, isLeftOperand: boolean): string {
-        const operandType = this.typeOfOperand(operand);
+        const operandType = typeOfOperand(operand);
         if (operandType === "string") {
             console.debug("in createEditValueJsx, operandtype = string");
             return (<input onKeyUp={isLeftOperand ? this.handleLeftOperandKeyUp : this.handleRightOperandKeyUp}/>)
@@ -85,8 +61,8 @@ export class ExpressionBlock extends React.Component<ExpressionBlockProps, {}> {
         const expression = this.props.expression;
         console.debug({expression});
 
-        const leftOperandType = this.typeOfOperand(expression.leftOperand);
-        const rightOperandType = this.typeOfOperand(expression.rightOperand);
+        const leftOperandType = typeOfOperand(expression.leftOperand);
+        const rightOperandType = typeOfOperand(expression.rightOperand);
         const leftOperandEditValueJsx = this.createEditValueJsx(expression.leftOperand, true)
         const rightOperandEditValueJsx = this.createEditValueJsx(expression.rightOperand, false)
 
