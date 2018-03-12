@@ -23,3 +23,7 @@ body, html {
   background-color: #ededed;
   padding: 10px;
 }
+
+.indented {
+  margin-left: 20px;
+}
