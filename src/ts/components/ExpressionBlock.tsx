@@ -3,7 +3,6 @@ import {Expression, Operand} from "../model/Expression";
 import {Operator} from "../model/Operator";
 import {observer} from "mobx-react";
 import ExpressionStore from "../state/ExpressionStore";
-import {OperandBlock} from "./OperandBlock";
 
 export interface ExpressionBlockProps { expression: Expression; store: ExpressionStore }
 
@@ -56,15 +55,26 @@ export class ExpressionBlock extends React.Component<ExpressionBlockProps, {}> {
         //TODO ETO: changeExpessionState shouldnt be expliitly called..
     };
 
+    handleLeftOperandKeyUp = (event: any) => {
+        this.props.expression.leftOperand = event.target.value;
+        this.props.store.changeExpressionState();
+    };
+
+    handleRightOperandKeyUp = (event: any) => {
+        this.props.expression.rightOperand = event.target.value;
+        this.props.store.changeExpressionState();
+    };
+
     createEditValueJsx(operand: Operand, isLeftOperand: boolean): string {
         console.debug("IN createEditValueJsx !!!!!!!");
         const operandType = this.typeOfOperand(operand);
         if (operandType === "string") {
             console.debug("IN createEditValueJsx !!!!!!! string");
-            return (<input onkeyup="console.log()"/>)
+            return (<input onKeyUp={isLeftOperand ? this.handleLeftOperandKeyUp : this.handleRightOperandKeyUp}/>)
         } else if (operandType === "expression") {
             console.debug("IN createEditValueJsx !!!!!!! expression");
-            return (<div className="indented">
+            return (<div className="indented" >
+                <br/>
                 <ExpressionBlock expression={operand} store={this.props.store}/>
             </div>)
         } else {
