@@ -13,7 +13,6 @@ export class Output extends React.Component <OutputBlockProps, {}> {
     render() {
         return <div className="output">
             Resulting query is: {this.props.store.createResultQuery}
-            <br/>
         </div>
     }
 }

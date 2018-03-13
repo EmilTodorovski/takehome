@@ -1,12 +1,13 @@
 import {Expression, Operand} from "../model/Expression";
+import {OperandType} from "../model/OperandType";
 
-export function typeOfOperand(operand: Operand): string {
+export function typeOfOperand(operand: Operand): OperandType {
     if (operand === undefined || operand === null) {
-        return "none"
+        return OperandType.NONE;
     } else if (typeof operand === "string") {
-        return "string"
+        return OperandType.STRING;
     } else {
-        return "expression"
+        return OperandType.EXPRESSION;
     }
 }
 
@@ -14,11 +15,11 @@ export function computeNewOperandValue(event: any): Operand {
     const eventValue = event.target.value;
     console.log(eventValue);
     let newValue;
-    if (eventValue === "none" ) {
+    if (eventValue == OperandType.NONE ) {
         newValue = undefined;
-    } else if (eventValue === "string") {
+    } else if (eventValue == OperandType.STRING) {
         newValue = "";
-    } else if (eventValue === "expression") {
+    } else if (eventValue == OperandType.EXPRESSION) {
         newValue = new Expression();
     }
     console.debug("New operand value: " + newValue);

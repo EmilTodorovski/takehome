@@ -14,7 +14,7 @@ export class Workspace extends React.Component<WorkspaceBlockProps, {}> {
     render() {
         return <div className="input">
             Visual Expression Builder <br/>
-            <ExpressionBlock expression={this.props.store.expression} store={this.props.store}/>
+            <ExpressionBlock expression={this.props.store.expression} store={this.props.store} path={[]}/>
         </div>;
     }
 }
